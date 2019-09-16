@@ -73,9 +73,18 @@ class SentinelAuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($email,$code)
     {
-        //
+        $user = Sentinel::findByEmail($email);
+
+        if (Activation::complete($user, 'activation_code_here'))
+        {
+            return 'Activation Success';
+        }
+        else
+        {
+            // Activation not found or not completed.
+        }
     }
 
     /**
@@ -85,9 +94,10 @@ class SentinelAuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $auth=Sentinel::authenticate($request->all());
+        return $auth;
     }
 
     /**
