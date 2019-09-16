@@ -40,9 +40,22 @@ class SentinelAuthController extends Controller
         $activation = Activation::create($user);
         $role = Sentinel::findRoleBySlug('admin');
         $role->users()->attach($user);
+        $this->sendEmail($user->email,$activation->code);
         return redirect('/');
     }
 
+    public function sendEmail($user,$code){
+
+        Mail::send('auth.activation', [
+            'user'=>$user,
+            'code' => $code
+        ] , function($message) use ($user)
+            {
+                $message->to($user);
+                $message->subject('Please verify your email address');
+            
+            });
+    }
     /**
      * Display the specified resource.
      *

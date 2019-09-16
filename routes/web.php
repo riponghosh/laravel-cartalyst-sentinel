@@ -19,3 +19,4 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::post('/sentinel/register', 'SentinelAuthController@store')->name('sentinel-register');
+Route::get('/sentinel/verify/{code}', 'HomeController@edit');
